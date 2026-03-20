@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Produtos</title>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+  <h1>Produto em Destaque</h1>
+  <div class="card" id="produto"></div>
+
+  <h1>Catálogo</h1>
+  <div class="catalogo" id="catalogo"></div>
+
+  <script>
+    const container = document.getElementById('produto');
+    const catalogo = document.getElementById('catalogo');
+
+    const apiUrl = "https://fakestoreapi.com/products";
+
+    const idProduto = 1;
+
+    fetch(`${apiUrl}/${idProduto}`)
+      .then(res => res.json())
+      .then(produto => {
+        container.innerHTML = `
+          <div class="image">
+            <img src="${produto.image}" loading="lazy">
+          </div>
+
+          <div class="info">
+            <h2>${produto.title}</h2>
+            <div class="price">R$ ${produto.price}</div>
+            <div class="rating">
+              &#x2B50 ${produto.rating.rate} (${produto.rating.count} avaliações)
+            </div>
+            <p class="desc">${produto.description}</p>
+            <button>Comprar agora</button>
+          </div>
+        `;
+      });
+
+
+    fetch(apiUrl)
+      .then(res => res.json())
+      .then(produtos => {
+
+        produtos.forEach(produto => {
+          catalogo.innerHTML += `
+            <div class="item">
+              <img src="${produto.image}" loading="lazy">
+              <h3>${produto.title}</h3>
+              <p>R$ ${produto.price}</p>
+              <button onclick="verProduto(${produto.id})">
+                Ver produto
+              </button>
+            </div>
+          `;
+        });
+
+      });
+
+
+    function verProduto(id) {
+      fetch(`${apiUrl}/${id}`)
+        .then(res => res.json())
+        .then(produto => {
+          container.innerHTML = `
+            <div class="image">
+              <img src="${produto.image}">
+            </div>
+
+            <div class="info">
+              <h2>${produto.title}</h2>
+              <div class="price">R$ ${produto.price}</div>
+              <div class="rating">
+                &#x2B50 ${produto.rating.rate} (${produto.rating.count} avaliações)
+              </div>
+              <p>${produto.description}</p>
+              <button>Comprar agora</button>
+            </div>
+          `;
+        });
+    }
+  </script>
+
+</body>
+</html>
