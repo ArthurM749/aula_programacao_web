@@ -15,10 +15,15 @@ $pessoas = [
     ["Idade" => "13"],
 ];
 
+$media = 0;
+
 $contMaiores = 0;
 $contMenores = 0;
 
 foreach ($pessoas as $pessoa) {
+
+    $media += $pessoa["idade"];
+
     if ($pessoa["Idade"] >= 18){
         $contMaiores++;
     }
